@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bint.mapper.LabelMapper">
+	<sql id="label">
+		id , labelName
+	</sql>
+	
+	<sql id="labelWithoutId">
+		labelName
+	</sql>
+
+	<insert id="add" parameterType="com.bint.mapper.LabelMapper"
+		keyProperty="id">
+		insert into BLOG_label (
+		<include refid="labelWithoutId" />
+		) values
+		(
+		#{labelName}
+		)
+	</insert>
+	<select id="list" resultType="com.bint.model.LabelModel">
+		select
+		<include refid="label" />
+		from BLOG_label
+	</select>
+	
+	<select id="delete" parameterType="Long" resultType="Integer">
+		delete from BLOG_label where id = #{id} 
+	</select>
+</mapper>

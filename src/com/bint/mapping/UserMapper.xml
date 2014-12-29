@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bint.mapper.UserMapper">
+	<sql id="userWithID">
+		id, username, password , address, gender ,permissionCode
+	</sql>
+
+	<sql id="userWithoutID">
+		 username, password , address, gender ,permissionCode
+	</sql>
+	<insert id="add" parameterType="com.bint.model.UserModel"
+		keyProperty="id">
+		insert into SYSTEM_user (
+		<include refid="userWithoutID" />
+		) values
+		(
+		#{username},
+		#{password},
+		#{address},
+		#{gender},
+		#{permissionCode}
+		)
+	</insert>
+	<select id="findByUsername"  parameterType="com.bint.model.UserModel" resultType="com.bint.model.UserModel">
+		select <include refid="userWithID" /> from SYSTEM_user where username=#{username}
+	</select>
+	<select id="list" resultType="com.bint.model.UserModel">
+		select
+		<include refid="userWithoutID" />
+		from SYSTEM_user
+	</select>
+	
+	<select id="delete" parameterType="Long" resultType="Integer">
+		delete from SYSTEM_user where id = #{id} 
+	</select>
+</mapper>

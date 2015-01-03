@@ -13,6 +13,6 @@ public class UserModelTestUtil extends AbstractTransactionalSpringContextTest{
 		user.setGender("ÄÐ");
 		user.setPassword("password");
 		user.setPermissionCode(1);
-		user.setUsername("username");
+		user.setUsername("linhongbin");
 	}
 }

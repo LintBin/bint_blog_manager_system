@@ -1,6 +1,6 @@
 package com.bint.model;
 
-import java.util.Set;
+import java.util.List;
 
 import com.bint.model.base.BaseModel;
 
@@ -10,7 +10,7 @@ public class UserModel extends BaseModel {
 	private String address;
 	private String gender;
 	private int permissionCode;
-	private Set<LabelModel> labelModels;
+	private List<ClassificationModel> classificationList;
 
 	public String getUsername() {
 		return username;
@@ -52,12 +52,12 @@ public class UserModel extends BaseModel {
 		this.permissionCode = permissionCode;
 	}
 
-	public Set<LabelModel> getLabelModels() {
-		return labelModels;
+	public List<ClassificationModel> getClassificationList() {
+		return classificationList;
 	}
 
-	public void setLabelModels(Set<LabelModel> labelModels) {
-		this.labelModels = labelModels;
+	public void setClassificationList(
+			List<ClassificationModel> classificationList) {
+		this.classificationList = classificationList;
 	}
-
 }

@@ -8,8 +8,8 @@
 	<sql id="labelWithoutId">
 		labelName
 	</sql>
-
-	<insert id="add" parameterType="com.bint.mapper.LabelMapper"
+	
+	<insert id="add" parameterType="com.bint.model.LabelModel"
 		keyProperty="id">
 		insert into BLOG_label (
 		<include refid="labelWithoutId" />

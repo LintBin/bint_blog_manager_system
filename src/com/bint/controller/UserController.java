@@ -35,7 +35,7 @@ public class UserController {
 
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
 	public @ResponseBody ModelMap list() {
-		List<UserModel> list = userServiceImpl.list();
+		List<UserModel> list = userServiceImpl.listAll();
 		ModelMap modelMap = new ModelMap();
 		modelMap.put("list", list);
 		return modelMap;

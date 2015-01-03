@@ -6,8 +6,18 @@
 	</sql>
 
 	<sql id="userWithoutID">
-		 username, password , address, gender ,permissionCode
+		username, password , address, gender ,permissionCode
 	</sql>
+	<resultMap type="com.bint.model.UserModel" id="userInfo">
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="address" property="address" />
+		<result column="gender" property="gender" />
+		<result column="permissionCode" property="permissionCode" />
+		<collection property="classificationList" ofType="com.bint.model.ClassificationModel" column="userId"></collection>
+	</resultMap>
+
 	<insert id="add" parameterType="com.bint.model.UserModel"
 		keyProperty="id">
 		insert into SYSTEM_user (
@@ -21,16 +31,43 @@
 		#{permissionCode}
 		)
 	</insert>
-	<select id="findByUsername"  parameterType="com.bint.model.UserModel" resultType="com.bint.model.UserModel">
-		select <include refid="userWithID" /> from SYSTEM_user where username=#{username}
+	<select id="findByUsername" parameterType="com.bint.model.UserModel"
+		resultType="com.bint.model.UserModel">
+		select
+		<include refid="userWithID" />
+		from SYSTEM_user where username=#{username}
 	</select>
-	<select id="list" resultType="com.bint.model.UserModel">
+
+	<select id="findById" parameterType="long" resultType="com.bint.model.UserModel">
+		select
+		<include refid="userWithID" />
+		from SYSTEM_user where id=#{id}
+	</select>
+
+	<select id="listAll" resultType="com.bint.model.UserModel">
 		select
 		<include refid="userWithoutID" />
 		from SYSTEM_user
 	</select>
-	
-	<select id="delete" parameterType="Long" resultType="Integer">
-		delete from SYSTEM_user where id = #{id} 
+
+	<delete id="delete" parameterType="Long">
+		delete from
+		SYSTEM_user
+		where id = #{id}
+	</delete>
+
+	<select id="getPage" parameterType="com.bint.vo.PageVo"
+		resultType="com.bint.model.UserModel">
+		select
+		<include refid="userWithoutID" />
+		from SYSTEM_user limit #{startIndex},#{size};
 	</select>
+
+	<select id="getAmount" parameterType="com.bint.vo.PageVo"
+		resultType="long">
+		select
+		count(*)
+		from SYSTEM_user;
+	</select>
+
 </mapper>

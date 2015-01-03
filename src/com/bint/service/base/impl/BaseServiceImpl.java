@@ -1,7 +1,10 @@
 package com.bint.service.base.impl;
 
+import java.util.List;
+
 import com.bint.mapper.base.BaseMapper;
 import com.bint.service.base.BaseService;
+import com.bint.vo.PageVo;
 
 public abstract class BaseServiceImpl<T> implements BaseService<T>{
 	public BaseMapper<T> baseMapper;
@@ -29,6 +32,19 @@ public abstract class BaseServiceImpl<T> implements BaseService<T>{
 
 	public void setBaseMapper(BaseMapper<T> baseMapper) {
 		this.baseMapper = baseMapper;
+	}
+
+	@Override
+	public List<T> listAll() {
+		return baseMapper.listAll();
+	}
+	
+	@Override
+	public PageVo getPage(PageVo pageVo){
+		List<T> list = baseMapper.getPage(pageVo);
+		pageVo.setAmount(baseMapper.getAmount());
+		pageVo.setList(list);
+		return pageVo;
 	}
 	
 }

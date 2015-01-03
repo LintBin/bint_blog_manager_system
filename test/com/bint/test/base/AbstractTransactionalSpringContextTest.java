@@ -2,13 +2,10 @@ package com.bint.test.base;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.transaction.annotation.Transactional;
+
+import com.bint.vo.PageVo;
 
 /**
  * 1.指定测试用例运行器
@@ -29,4 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { "classpath*:junit-spring-test.xml" })
 public abstract class AbstractTransactionalSpringContextTest extends
 		AbstractTransactionalJUnit4SpringContextTests {
+	public PageVo pageVo = new PageVo();
+	public AbstractTransactionalSpringContextTest(){
+		pageVo.setSize(5);
+		pageVo.setStartIndex(1);
+	}
 }

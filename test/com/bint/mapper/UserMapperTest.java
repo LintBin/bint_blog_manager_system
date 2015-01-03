@@ -1,10 +1,14 @@
 package com.bint.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import com.bint.base.util.UserModelTestUtil;
 import com.bint.model.UserModel;
+import com.bint.vo.PageVo;
 
 public class UserMapperTest extends UserModelTestUtil{
 	@Autowired
@@ -21,6 +25,32 @@ public class UserMapperTest extends UserModelTestUtil{
 	}
 	@Test
 	public void add(){
-		userMapper.add(user);
+		for(int i=0;i<10;i++){
+			user.setUsername("hongbin"+i);
+			userMapper.add(user);
+		}
+	}
+	@Test
+	public void getPage(){
+		PageVo page = new PageVo();
+		page.setSize(5);
+		page.setStartIndex(1);
+		List<UserModel> list = userMapper.getPage(page);
+		System.out.println(list.size());
+		System.out.println(list.get(4).getUsername());
+	}
+	
+	@Test
+	public void getAmount(){
+		long amount = userMapper.getAmount();
+		System.out.println(amount);
+	}
+	@Rollback(false)
+	@Test
+	public void findById(){
+		long id = 11;
+		UserModel userModel = userMapper.findById(id);
+		System.out.println(userModel.getUsername());
+		System.out.println(userModel.getClassificationList().size());
 	}
 }

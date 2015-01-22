@@ -12,32 +12,31 @@ import com.bint.service.base.impl.BaseServiceImpl;
 import com.bint.vo.UserVo;
 
 @Service
-public class UserServiceImpl extends BaseServiceImpl<UserModel> implements UserService{
+public class UserServiceImpl extends BaseServiceImpl<UserModel> implements
+		UserService {
 	private UserMapper userMapper;
+
 	@Resource
-	public void setUserMapper(UserMapper userMapper){
+	public void setUserMapper(UserMapper userMapper) {
 		this.userMapper = userMapper;
 		this.setBaseMapper(userMapper);
 	}
-	
-	public UserModel login(UserVo userVo) throws NotDealtException{
-		System.out.println("in the login :" + userVo.getPassword());
-		System.out.println("in the login :" + userVo.getUsername());
-		if (userVo.getUsername() == null || userVo.getPassword() == null){
+
+	@Override
+	public UserModel login(UserVo userVo) throws NotDealtException {
+		if (userVo.getUsername() == null || userVo.getPassword() == null) {
 			return null;
 		}
 		UserModel userModel = userMapper.findByUsername(userVo.getUsername());
-		if (userModel == null){
-			System.out.println("userModel is null");
+		if (userModel == null) {
 			return null;
 		}
-		if (userVo.getPassword().equals(userModel.getPassword())){
+		if (userVo.getPassword().equals(userModel.getPassword())) {
+			System.err.println(userModel.toString());
 			return userModel;
-		}else{
-			System.out.println("’À∫≈√‹¬Î≤ª∆•≈‰");
+		} else {
 			return null;
 		}
 	}
-
 
 }

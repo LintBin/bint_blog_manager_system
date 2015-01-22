@@ -11,8 +11,8 @@ public class ArticleModel extends BaseModel {
 	private Date uploadTime;
 	private int stateCode;
 	private int praiseAmount;
-	private UserModel userModel;
-	private ClassificationModel classifiction;
+	private UserModel author;
+	private ClassificationModel classification;
 
 	public String getHeadline() {
 		return headline;
@@ -62,19 +62,29 @@ public class ArticleModel extends BaseModel {
 		this.praiseAmount = praiseAmount;
 	}
 
-	public ClassificationModel getClassifiction() {
-		return classifiction;
+	public ClassificationModel getClassification() {
+		return classification;
 	}
 
-	public void setClassifiction(ClassificationModel classifiction) {
-		this.classifiction = classifiction;
+	public void setClassification(ClassificationModel classification) {
+		this.classification = classification;
 	}
 
-	public UserModel getUserModel() {
-		return userModel;
+	public UserModel getAuthor() {
+		return author;
 	}
 
-	public void setUserModel(UserModel userModel) {
-		this.userModel = userModel;
+	public void setAuthor(UserModel author) {
+		this.author = author;
 	}
+
+	@Override
+	public String toString() {
+		return "ArticleModel [headline=" + headline + ", content=" + content
+				+ ", digest=" + digest + ", uploadTime=" + uploadTime
+				+ ", stateCode=" + stateCode + ", praiseAmount=" + praiseAmount
+				+ ", author=" + author + ", classification=" + classification
+				+ "]";
+	}
+	
 }

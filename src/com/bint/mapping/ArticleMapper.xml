@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bint.mapper.ArticleMapper">
+	<sql id="ArticleWithID">
+		id, headline, authorId ,digest , uploadTime  , classificationId ,content  , stateCode ,praiseAmount
+	</sql>
+
+	<sql id="ArticleWithoutID">
+		headline, authorId ,digest , uploadTime  , classificationId ,content  , stateCode ,praiseAmount
+	</sql>
+	<insert id="add" parameterType="com.bint.model.ArticleModel"
+		keyProperty="id">
+		insert into BLOG_Article (
+		<include refid="ArticleWithoutID" />
+		) values(
+			#{headline},
+			#{author.id},
+			#{digest},
+			#{uploadTime},
+			#{classification.id},
+			#{content},
+			#{stateCode},
+			#{praiseAmount}
+		)
+	</insert>
+
+	<select id="findById" parameterType="long" resultType="com.bint.model.ArticleModel">
+		select
+		<include refid="ArticleWithID" />
+		from BLOG_article where id=#{id}
+	</select>
+
+	<select id="listAll" resultType="com.bint.model.ArticleModel">
+		select
+		<include refid="ArticleWithoutID" />
+		from BLOG_article
+	</select>
+
+	<delete id="delete" parameterType="Long">
+		delete from
+		BLOG_article
+		where id = #{id}
+	</delete>
+
+	<select id="getPage" parameterType="com.bint.vo.PageVo"
+		resultType="com.bint.model.ArticleModel">
+		select * from BLOG_article limit #{startIndex},#{size};
+	</select>
+
+	<select id="getAmount" parameterType="com.bint.vo.PageVo"
+		resultType="long">
+		select count(*) from BLOG_article;
+	</select>
+	
+	<select id="fuzzyQuery" parameterType="com.bint.vo.ArticleVo" resultType="com.bint.model.ArticleModel">
+		select * from BLOG_article where 1=1
+				<if test="digest != null"> and digest LIKE '%${digest}%' </if>
+			 	<if test="headline != null"> and headline LIKE '%${headline}%'
+			 	</if>
+	</select>
+	
+	<update id="update" parameterType="com.bint.model.ArticleModel">
+		UPDATE BLOG_article SET headline = #{headline},
+		authorId = #{author.id},digest = #{digest},
+		uploadTime = #{uploadTime},classificationId = #{classification.Id},
+		stateCode = #{stateCode},praiseAmount = #{praiseAmount},
+		content = #{content}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

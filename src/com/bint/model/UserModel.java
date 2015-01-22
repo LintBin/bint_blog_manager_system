@@ -60,4 +60,13 @@ public class UserModel extends BaseModel {
 			List<ClassificationModel> classificationList) {
 		this.classificationList = classificationList;
 	}
+
+	@Override
+	public String toString() {
+		return "UserModel [username=" + username + ", password=" + password
+				+ ", address=" + address + ", gender=" + gender
+				+ ", permissionCode=" + permissionCode
+				+ ", classificationList=" + classificationList + "]";
+	}
+	
 }

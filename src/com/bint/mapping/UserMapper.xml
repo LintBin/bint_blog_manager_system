@@ -46,7 +46,7 @@
 
 	<select id="listAll" resultType="com.bint.model.UserModel">
 		select
-		<include refid="userWithoutID" />
+		*
 		from SYSTEM_user
 	</select>
 
@@ -59,10 +59,14 @@
 	<select id="getPage" parameterType="com.bint.vo.PageVo"
 		resultType="com.bint.model.UserModel">
 		select
-		<include refid="userWithoutID" />
+		id, username, password , address, gender ,permissionCode
 		from SYSTEM_user limit #{startIndex},#{size};
 	</select>
-
+	
+	<update id="update" parameterType="com.bint.model.UserModel">
+		update SYSTEM_user SET password=#{password} ,gender=#{gender}, address = #{address} WHERE username = #{username};
+	</update>
+	
 	<select id="getAmount" parameterType="com.bint.vo.PageVo"
 		resultType="long">
 		select

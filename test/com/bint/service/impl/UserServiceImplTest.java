@@ -1,8 +1,9 @@
 package com.bint.service.impl;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
 import com.bint.base.util.UserModelTestUtil;
 import com.bint.model.UserModel;
@@ -15,8 +16,10 @@ public class UserServiceImplTest extends UserModelTestUtil{
 	
 	@Test
 	public void list(){
-		long id = 1;
-		System.out.println("Size:" + userServiceImpl.listAll().size());;
+		List<UserModel> users = userServiceImpl.listAll();
+		for(UserModel user :users){
+			System.err.println(user.getId());
+		}
 	}
 	@Test
 	public void login() throws Exception {
@@ -33,5 +36,7 @@ public class UserServiceImplTest extends UserModelTestUtil{
 	public void getPage(){
 		this.pageVo =  userServiceImpl.getPage(pageVo);
 		System.out.println(pageVo.getAmount());
+		UserModel user = (UserModel) pageVo.getList().get(0);
+		System.out.println(user.getAddress());
 	}
 }

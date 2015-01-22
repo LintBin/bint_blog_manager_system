@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.bint.model.UserModel;
 import com.bint.util.MD5Util;
 import com.bint.vo.UserVo;
-
 @Component
 @Aspect
 public class MD5Aspect {
@@ -29,7 +28,7 @@ public class MD5Aspect {
 	}
 	
 	@Around("execution(* com.bint.service.impl.UserServiceImpl.login(..))")
-	public void loginAround(ProceedingJoinPoint joinPoint) throws Throwable{
+	public Object loginAround(ProceedingJoinPoint joinPoint) throws Throwable{
 		i++;
 		System.out.println("aspect start " + i);
 		Object[] args =  joinPoint.getArgs();
@@ -39,10 +38,11 @@ public class MD5Aspect {
 		user.setPassword(MD5Util.encrypt(user.getPassword()));
 		args[0] = user;
 		System.out.println("in the aspect : password is " + user.getPassword());
-		joinPoint.proceed(args);
+		UserModel userModel = (UserModel) joinPoint.proceed(args);
 		System.out.println("aspect is finished");
+		return userModel;
 	}
-	@Around("execution(* com.bint.service.impl.UserServiceImpl..save(..))")
+//	@Around("execution(* com.bint.service.impl.UserServiceImpl.save(..))")
 	public void aroundSave(ProceedingJoinPoint joinPoint) throws Throwable{
 		System.out.println("aspect start");
 		Object[] args =  joinPoint.getArgs();

@@ -4,10 +4,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
-import com.bint.base.util.ClassificationlTestUtil;
+import com.bint.base.util.ClassificationModellTestUtil;
 import com.bint.model.ClassificationModel;
 
-public class ClassifcationMapperTest extends ClassificationlTestUtil{
+public class ClassifcationMapperTest extends ClassificationModellTestUtil{
 	@Autowired
 	private ClassificationMapper classficationMapper;
 	
@@ -27,10 +27,14 @@ public class ClassifcationMapperTest extends ClassificationlTestUtil{
 	
 	@Test
 	public void findById(){
-		long id = 10;
+		long id = 8;
 		ClassificationModel c = classficationMapper.findById(id);
 		System.out.println(c.getClassificationName());
-		System.out.println(c.getUser().getUsername());
+		if(c.getUser() == null){
+			System.out.println("user is null");
+		}
+		
+		System.out.println(c.getUser());
 	}
 	
 	

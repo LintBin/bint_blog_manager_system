@@ -6,7 +6,7 @@ import com.bint.mapper.base.BaseMapper;
 import com.bint.service.base.BaseService;
 import com.bint.vo.PageVo;
 
-public abstract class BaseServiceImpl<T> implements BaseService<T>{
+public class BaseServiceImpl<T> implements BaseService<T>{
 	public BaseMapper<T> baseMapper;
 	
 	
@@ -26,8 +26,9 @@ public abstract class BaseServiceImpl<T> implements BaseService<T>{
 	}
 
 	@Override
-	public void findById(Long id) {
-		baseMapper.findById(id);
+	public T findById(Long id) {
+		T model = baseMapper.findById(id);
+		return model;
 	}
 
 	public void setBaseMapper(BaseMapper<T> baseMapper) {

@@ -16,14 +16,30 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:prefix="/" p:suffix=".jsp" />
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-	 <property name="messageConverters">
-	  <list>
-	   <bean
-	    class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
-	  </list>
-	 </property>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
 	</bean>
 
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5000000" />
+	</bean>
+	
+	<mvc:interceptors>
+	  <mvc:interceptor>
+	    <mvc:mapping path="add*"/>
+	    <mvc:mapping path="update*"/>
+	    <mvc:mapping path="delete*"/>
+	    <mvc:mapping path="edit*"/>
+	    <mvc:mapping path="list*"/>
+	    <bean class="com.bint.interceptor.JspInterceptor"/>
+	  </mvc:interceptor>
+	</mvc:interceptors>
 
 </beans>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bint.mapper.ClassificationMapper">
-	
-	<resultMap type="com.bint.model.ClassificationModel" id="classificationInfo">
+ 	<resultMap type="com.bint.model.ClassificationModel" id="classificationInfo">
 		<id column="id" property="id" />
 		<result column="classificationName" property="classificationName" />
-		<association property="user" column="userId" select="findAuthor"></association>
-	</resultMap>
+		<association property="userModel" select="getUser" column="userId">
+		</association>
+	</resultMap> 
 	
 	<sql id="classification">
 		id , classificationName , userId
@@ -19,12 +19,20 @@
 	<select id="findAuthor">
 		SELECT * FROM SYSTEM_user WHERE ID = #{id}
 	</select>
+	
+	<select id="getUser">
+		select id, username, password , address, gender ,permissionCode from SYSTEM_user where id = #{id}
+	</select>
 
-	<select id="findById" parameterType="long"
-		resultType="com.bint.model.ClassificationModel">
-		select
-		<include refid="classification" />
-		from BLOG_classification where id= #{id}
+	<!-- <select id="findById" parameterType="long" resultType="com.bint.model.ClassificationModel">
+		Select *
+		From BLOG_classification
+		Right JOIN SYSTEM_user
+		On BLOG_classification.userId = SYSTEM_user.id where BLOG_classification.id = #{id}
+	</select> -->
+	
+	<select id="findById" parameterType="long" resultType="com.bint.model.ClassificationModel">
+		select <include refid="classification" /> from BLOG_classification where id=#{id}
 	</select>
 	<insert id="add" parameterType="com.bint.model.ClassificationModel"
 		keyProperty="id">
@@ -46,5 +54,5 @@
 	<select id="delete" parameterType="Long" resultType="Integer">
 		delete from
 		BLOG_classification where id = #{id}
-	</select>
+	</select> 
 </mapper>

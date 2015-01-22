@@ -6,7 +6,6 @@ public class ClassificationModel extends BaseModel {
 	private String classificationName;
 	private UserModel user;
 
-
 	public String getClassificationName() {
 		return classificationName;
 	}
@@ -22,5 +21,6 @@ public class ClassificationModel extends BaseModel {
 	public void setUser(UserModel user) {
 		this.user = user;
 	}
+
 
 }

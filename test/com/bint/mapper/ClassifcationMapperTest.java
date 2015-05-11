@@ -14,8 +14,6 @@ public class ClassifcationMapperTest extends ClassificationModellTestUtil{
 	@Rollback(false)
 	@Test
 	public void add(){
-		user.setId(12);
-		classification.setUser(user);
 		classficationMapper.add(classification);
 	}
 	
@@ -30,11 +28,6 @@ public class ClassifcationMapperTest extends ClassificationModellTestUtil{
 		long id = 8;
 		ClassificationModel c = classficationMapper.findById(id);
 		System.out.println(c.getClassificationName());
-		if(c.getUser() == null){
-			System.out.println("user is null");
-		}
-		
-		System.out.println(c.getUser());
 	}
 	
 	

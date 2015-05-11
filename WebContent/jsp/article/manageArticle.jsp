@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/include.inc.jsp"%>
-<form id="pagerForm" method="post" action="getArticle.do">
+<form id="pagerForm" method="post" action="getPageArticle.do">
 	<input type="hidden" name="status" value="${param.status}">
 	<input type="hidden" name="keywords" value="${param.keywords}" />
 	<input type="hidden" name="currentPage" value="1" />

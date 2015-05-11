@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,15 +23,32 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.bint.controller.base.BaseController;
+import com.bint.model.ArticleLabelModel;
 import com.bint.model.ArticleModel;
+import com.bint.model.ClassificationModel;
+import com.bint.model.LabelModel;
+import com.bint.service.ArticleLabelService;
 import com.bint.service.ArticleService;
+import com.bint.service.ClassificationService;
+import com.bint.service.CommentService;
+import com.bint.service.LabelService;
+import com.bint.util.PagingUtil;
 import com.bint.vo.ArticleVo;
+import com.bint.vo.CommentVo;
 import com.bint.vo.PageVo;
 
 @Controller
 public class ArticleController extends BaseController {
 	@Autowired
 	private ArticleService articleServiceImpl;
+	@Autowired
+	private CommentService commentServiceImpl;
+	@Autowired
+	private LabelService labelServiceImpl;
+	@Autowired
+	private ArticleLabelService articleLabelServiceImpl;
+	@Autowired
+	private ClassificationService classificationServiceImpl;
 
 	/**
 	 * 跳转到分页页面
@@ -51,25 +67,53 @@ public class ArticleController extends BaseController {
 	@RequestMapping(value = "addArticle", method = RequestMethod.POST)
 	public @ResponseBody ModelMap save(ArticleVo article) {
 		articleServiceImpl.save(article);
-		return sucess();
+		return success();
 	}
-
+	
 	@RequestMapping(value = "editArtcle")
 	public String edit(ArticleVo article, Model model) {
-		ArticleModel articleModel = articleServiceImpl.findById(article
-				.getArticleId());
+		ArticleModel articleModel = articleServiceImpl.findById(article.getArticleId());
 		model.addAttribute("article", articleModel);
+		
+		//所有的分类
+		List<ClassificationModel> classificationList = classificationServiceImpl.listAll();
+		model.addAttribute("classificationList",classificationList);
+		//所拥有的标签列表
+		List<ArticleLabelModel> articleLabelList = articleLabelServiceImpl.getLabelListByArticelId(article.getArticleId());
+		model.addAttribute("articleLabelList",articleLabelList);
+		
+		//所有的标签列表
+		List<LabelModel> list = labelServiceImpl.getList(null);
+		model.addAttribute("allArticleLabelList",list);
 		return "jsp/article/editArticle";
 	}
 
 	@RequestMapping(value = "updateArticle")
-	public @ResponseBody ModelMap update(ArticleVo article, Model model) {
-		System.err.println("content:"+article.getContent());
-		System.err.println("id:"+ article.getArticleId());
+	public @ResponseBody ModelMap update(ArticleModel article, Model model) {
+		System.err.println(article.getId());
+		System.err.println(article.getAuthor());
 		articleServiceImpl.update(article);
-		return sucess();
+		return success();
 	}
 	
+	@RequestMapping(value = "front_page_article")
+	public String getFrontPageArticle(PageVo pageVo,String labelId, Model model) {
+		pageVo.setObject(labelId);
+		pageVo.setSize(PagingUtil.FRONT_ATICLE_PAGE_SIZE);
+		pageVo = articleServiceImpl.getPage(pageVo);
+		Long amount = articleServiceImpl.getAmount(pageVo);
+		int pageAmount = PagingUtil.getPageAmount(amount,PagingUtil.FRONT_ATICLE_PAGE_SIZE);
+		pageVo.setPageAmount(pageAmount);
+		
+		model.addAttribute("articleList",pageVo);
+		
+		//取出标签云中的标签数据
+		List<LabelModel> labelList = labelServiceImpl.getList(null);
+		model.addAttribute("labelList",labelList);
+
+		System.err.println("前台页面的数量:"+pageVo.getList().size());
+		return "front_jsp/index";
+	}
 	
 	@RequestMapping(value = "deleteArticle")
 	public @ResponseBody ModelMap delete(ArticleVo article) {
@@ -78,19 +122,30 @@ public class ArticleController extends BaseController {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return sucess();
+		return success();
+	}
+	
+	@RequestMapping(value = "getArticleById",method = RequestMethod.GET)
+	public String getArticleById(Model model,Long id){
+		ArticleModel article = articleServiceImpl.findById(id);
+		model.addAttribute("article", article);
+		List<CommentVo> commentList = commentServiceImpl.listCommentByBlogId(id);
+		model.addAttribute("commemtList", commentList);
+		//所拥有的标签
+		List<ArticleLabelModel> result = articleLabelServiceImpl.getLabelListByArticelId(id);
+		model.addAttribute("havingLabelList", result);
+		return "front_jsp/articleDetail";
 	}
 	
 	@RequestMapping(value = "queryArticle")
 	public String queryArticle(ArticleVo articleVo, Model model) {
-		System.err.println(articleVo.toString());
 		PageVo pageVo = articleServiceImpl.fuzzyQuery(articleVo);
 		model.addAttribute("pageVo", pageVo);
 		return "jsp/article/manageArticle";
 	}
 
 	@RequestMapping(value = "uploadImg", method = RequestMethod.POST)
-	 public void uploadImage(HttpServletRequest request,
+	public void uploadImage(HttpServletRequest request,
 	            HttpServletResponse response)throws Exception{
 	        ServletOutputStream out = response.getOutputStream();
 	        request.setCharacterEncoding( "utf-8" );

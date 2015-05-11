@@ -40,11 +40,6 @@ public class UserMapperTest extends UserModelTestUtil{
 		System.out.println(list.get(4).getUsername());
 	}
 	
-	@Test
-	public void getAmount(){
-		long amount = userMapper.getAmount();
-		System.out.println(amount);
-	}
 	@Rollback(false)
 	@Test
 	public void findById(){

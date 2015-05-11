@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bint.mapper.CommentMapper">
+	<resultMap type="com.bint.vo.CommentVo" id="commentVoResultInfo">
+		<result column="blogId" property="blogId" />
+		<result column="c_id" property="comemntId" />
+		<result column="c_commentTime" property="commentTime" />
+		<result column="c_content" property="content" />
+		<result column="c_responseCommentId" property="parentCommentId" />
+		<result column="u_usermae" property="username" />
+		<result column="a_headline" property="articleTittle" />
+	</resultMap> 
+	
+	<sql id="CommentBase">
+		id, commentTime,content,userId,blogId,responseCommentId
+	</sql>
+	<sql id="CommentWithoutID">
+		commentTime,content,userId,blogId,responseCommentId
+	</sql>
+	<insert id="add" parameterType="com.bint.model.CommentModel" keyProperty="id">
+		insert into BLOG_Comment (
+		<include refid="CommentWithoutID" />
+		) values(
+			#{commentTime},
+			#{content},
+			#{userId},
+			#{blogId},
+			#{comemntId}
+		)
+	</insert>
+
+	<select id="listCommentByBlogId" parameterType="long" resultMap="commentVoResultInfo">
+		SELECT
+			c.id c_id,
+			c.blogId blogId,
+			c.commentTime c_commentTime,
+			c.content c_content,
+			c.responseCommentId c_responseCommentId,
+			u.username u_usermae
+		FROM
+			Blog_Comment AS c
+		JOIN system_user AS u ON c.userId = u.id
+		WHERE
+			blogId = #{blogId}
+		ORDER BY
+			c.commentTime DESC
+	</select>
+
+	<!-- 取出当前用户最新的一条评论 -->
+	<select id="getLatestCommentByUserId" resultMap="commentVoResultInfo" parameterType="Long">
+		SELECT
+			c.id c_id,
+			c.blogId blogId,
+			c.commentTime c_commentTime,
+			c.content c_content,
+			c.responseCommentId c_responseCommentId,
+			u.username u_usermae
+		FROM
+			Blog_Comment AS c
+		JOIN system_user AS u ON c.userId = u.id
+		WHERE
+			u.id = #{userId}
+		ORDER BY
+			c.id DESC
+		LIMIT 0,1;
+	</select>
+	
+	
+	
+	<select id="getPageComment" parameterType="com.bint.vo.PageVo"
+		resultMap="commentVoResultInfo">
+		SELECT
+			c.id c_id,
+			c.blogId blogId,
+			c.commentTime c_commentTime,
+			c.content c_content,
+			c.responseCommentId c_responseCommentId,
+			u.username u_usermae ,
+			a.headline a_headline
+		FROM
+			Blog_Comment AS c
+		JOIN system_user AS u ON c.userId = u.id
+		LEFT JOIN Blog_Article AS a ON c.blogId = a.id
+		WHERE 
+		<if test="object !=null">
+			<if test="object.username !=null">
+	      		u.username LIKE CONCAT('%',#{object.username},'%') AND
+	    	</if>
+	    	<if test="object.username !=null">
+	      		a.headline LIKE CONCAT('%',#{object.articleTittle},'%') AND
+	    	</if>
+    	</if>
+    	1=1
+		ORDER BY
+			c.commentTime DESC
+		LIMIT 
+			#{startIndex},#{size}
+	</select>
+	
+	<select id="getAmount" parameterType="com.bint.vo.PageVo"
+		resultType="long">
+		SELECT
+			count(*)
+		FROM
+			Blog_Comment AS c
+		JOIN system_user AS u ON c.userId = u.id
+		LEFT JOIN Blog_Article AS a ON c.blogId = a.id
+		WHERE
+		<if test="object !=null">
+			<if test="object.username!=null and object.username!=''">
+	      		u.username LIKE CONCAT('%',#{object.username},'%') AND
+	    	</if>
+	    	<if test="object.articleTittle !=null and object.articleTittle!=''">
+	      		a.headline LIKE CONCAT('%',#{object.articleTittle},'%') AND
+	    	</if>
+    	</if>
+    	1=1;
+	</select>
+	
+	 <delete id="delete" parameterType="Long">
+		delete from
+		BLOG_comment
+		where id = #{id}
+	</delete>
+	
+	<!--
+	<select id="getPage" parameterType="com.bint.vo.PageVo"
+		resultType="com.bint.model.ArticleModel">
+		select * from BLOG_article limit #{startIndex},#{size};
+	</select>
+
+	<select id="getAmount" parameterType="com.bint.vo.PageVo"
+		resultType="long">
+		select count(*) from BLOG_article;
+	</select>
+	
+	<select id="fuzzyQuery" parameterType="com.bint.vo.ArticleVo" resultType="com.bint.model.ArticleModel">
+		select * from BLOG_article where 1=1
+				<if test="digest != null"> and digest LIKE '%${digest}%' </if>
+			 	<if test="headline != null"> and headline LIKE '%${headline}%'
+			 	</if>
+	</select>
+	
+	<update id="update" parameterType="com.bint.model.ArticleModel">
+		UPDATE BLOG_article SET headline = #{headline},
+		author = #{author},digest = #{digest},
+		uploadTime = #{uploadTime},classificationId = #{classification.Id},
+		stateCode = #{stateCode},praiseAmount = #{praiseAmount},
+		content = #{content}
+		WHERE id = #{id}
+	</update>
+	 -->
+</mapper>

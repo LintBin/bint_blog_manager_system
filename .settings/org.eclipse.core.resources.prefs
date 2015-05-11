@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/adminIndex.jsp=UTF-8
+encoding//WebContent/WEB-INF/userIndex.jsp=UTF-8
+encoding//WebContent/front_jsp/articleDetail.jsp=UTF-8
+encoding//WebContent/front_jsp/front_login.jsp=UTF-8
+encoding//WebContent/jsp/article/manageArticle.jsp=UTF-8
+encoding//WebContent/jsp/classification/manageClassification.html=UTF-8
+encoding//WebContent/jsp/user/manageUser.jsp=UTF-8
+encoding//WebContent/login.jsp=UTF-8
+encoding/WebContent=UTF-8
+encoding/src=UTF-8

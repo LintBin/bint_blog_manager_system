@@ -7,6 +7,7 @@ import com.bint.vo.PageVo;
 
 public interface ArticleService extends BaseService<ArticleModel>{
 	public void save(ArticleVo articleVo);
-	public void update(ArticleVo articleVo);
+	public void update(ArticleModel articleModel);
 	public PageVo fuzzyQuery(ArticleVo articleVo);
+	public Long getAmount(PageVo pageVo);
 }

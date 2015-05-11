@@ -4,7 +4,6 @@ import com.bint.model.base.BaseModel;
 
 public class ClassificationModel extends BaseModel {
 	private String classificationName;
-	private UserModel user;
 
 	public String getClassificationName() {
 		return classificationName;
@@ -14,13 +13,10 @@ public class ClassificationModel extends BaseModel {
 		this.classificationName = classificationName;
 	}
 
-	public UserModel getUser() {
-		return user;
+	@Override
+	public String toString() {
+		return "ClassificationModel [classificationName=" + classificationName
+				+ "]";
 	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
-	}
-
 
 }

@@ -9,6 +9,25 @@ public class PageVo {
 	
 	private long amount ;
 	private int currentPage =1;
+	private int pageNum = 1;
+	private int pageAmount ;
+	
+	public int getPageAmount() {
+		return pageAmount;
+	}
+	public void setPageAmount(int pageAmount) {
+		this.pageAmount = pageAmount;
+	}
+	public int getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
+	//封装查询的条件
+	private Object object;
+	
+	
 	public long getAmount() {
 		return amount;
 	}
@@ -22,7 +41,7 @@ public class PageVo {
 		this.list = list;
 	}
 	public long getStartIndex() {
-		return (currentPage-1)*size;
+		return (pageNum-1)*size;
 	}
 	public void setStartIndex(long startIndex) {
 		this.startIndex = startIndex;
@@ -41,11 +60,19 @@ public class PageVo {
 	public void setSize(int size) {
 		this.size = size;
 	}
+	public Object getObject() {
+		return object;
+	}
+	public void setObject(Object object) {
+		this.object = object;
+	}
 	@Override
 	public String toString() {
 		return "PageVo [list=" + list + ", startIndex=" + startIndex
-				+ ", numPerPage=" + size + ", amount=" + amount
-				+ ", currentPage=" + currentPage + "]";
+				+ ", size=" + size + ", amount=" + amount + ", currentPage="
+				+ currentPage + ", pageNum=" + pageNum + ", object=" + object
+				+ "]";
 	}
+	
 	
 }

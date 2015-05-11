@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.bint.model.ArticleModel;
 import com.bint.model.ClassificationModel;
-import com.bint.model.UserModel;
 import com.bint.test.base.AbstractTransactionalSpringContextTest;
 
 public class ArtcileModelTestUtil extends AbstractTransactionalSpringContextTest{
@@ -20,8 +19,6 @@ public class ArtcileModelTestUtil extends AbstractTransactionalSpringContextTest
 		article.setPraiseAmount(10);
 		article.setStateCode(1);
 		article.setUploadTime(new Date());
-		UserModel user = new UserModel();
-		user.setId(12);
-		article.setAuthor(user);
+		article.setAuthor("admin");
 	}
 }

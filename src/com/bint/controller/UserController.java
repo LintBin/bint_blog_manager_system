@@ -35,9 +35,7 @@ public class UserController extends BaseController{
 	@Resource
 	private UserService userServiceImpl;
 	
-	/**
-	 * 验证码
-	 */
+	//验证码
 	private Producer captchaProducer = null;  
 	  
     @Autowired  
@@ -57,7 +55,7 @@ public class UserController extends BaseController{
 			e.printStackTrace();
 			return failed();
 		}
-		return sucess();
+		return success();
 	}
 	/**
 	 * 跳转到编辑页面
@@ -80,7 +78,7 @@ public class UserController extends BaseController{
 		userVo.setPassword(MD5Util.encrypt(userVo.getPassword()));
 		BeanUtils.copyProperties(userVo, userModel);
 		userServiceImpl.update(userModel);
-		return sucess();
+		return success();
 	}
 	
 	@RequestMapping("captcha-image")  
@@ -135,26 +133,41 @@ public class UserController extends BaseController{
 		return "WEB-INF/adminIndex";
 	}
 	
-	
+	/**
+	 * 普通用户登录
+	 * @param userVo
+	 * @param httpSession
+	 * @return
+	 * @throws NotDealtException
+	 */
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public String loginUser(UserVo userVo,HttpSession httpSession) throws NotDealtException {
 		
-		
 		UserModel userModel = userServiceImpl.login(userVo);
 		if (userModel == null){
-			//TODO 返回登陆错误的信息
+			//返回登陆错误的信息
 			return "userLogin";
 		}else{
-			//TODO 把用户的信息存放到session域
+			//把用户的信息存放到session域
 			httpSession.setAttribute("user", userModel);
 		}
-		return "WEB-INF/userIndex";
+		
+		//取出用户跳转的url
+		String url = (String) httpSession.getAttribute("url");
+		System.err.println("登录前的url是"+url);
+		if(url != null){
+			System.err.println("设定url");
+			return "redirect:/" + url;
+		}
+		System.err.println("没有设定url");
+		return "redirect:/front_page_article.do";
+		//return "WEB-INF/userIndex";
 	}
 	
 	@RequestMapping(value = "deleteUser")
 	public @ResponseBody ModelMap delete(Long uid){
 		this.userServiceImpl.delete(uid);
-		return sucess();
+		return success();
 	}
 	/**
 	 * 分页

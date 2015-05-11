@@ -131,8 +131,12 @@
 					</div>
 					<div class="accordionContent">
 						<ul class="tree">
-							<li><a href="getPageUser.do?size=20&startIndex=1" target="navTab"
-								rel="user">用户管理</a></li>
+							<li><a href="getPageUser.do?size=20&startIndex=1" target="navTab" rel="user">用户管理</a></li>
+							<li><a href="getPageArticle.do?size=20&startIndex=1" target="navTab" rel="article">文章管理</a></li>
+							<li><a href="comment/getPageComment.do?size=20&startIndex=1" target="navTab" rel="article">评论管理</a></li>
+							<li><a href="label/getList.do" target="navTab" rel="article">标签管理</a></li>
+							<li><a href="getPageArticle.do?size=20&startIndex=1" target="navTab" rel="article">文章标签管理</a></li>
+							<li><a href="jsp/comment/manageClassification.html" target="navTab" rel="article">分类管理</a></li>
 						</ul>
 					</div>
 				</div>

@@ -94,7 +94,8 @@ $(function(){
 					<div class="accordionContent">
 						<ul class="tree">
 							<li><a href="getPageArticle.do?size=20&startIndex=1" target="navTab" rel="article">文章管理</a></li>
-							<li><a href="jsp/classification/manageArticle.html" target="navTab" rel="article">分类管理</a></li>
+							<li><a href="jsp/classification/manageClassification.html" target="navTab" rel="article">分类管理</a></li>
+							<li><a href="jsp/classification/manageArticle.html" target="navTab" rel="article">标签管理</a></li>
 							<!-- <li><a href="articleList.do" target="navTab" rel="article">demo</a></li> -->
 						</ul>
 					</div>

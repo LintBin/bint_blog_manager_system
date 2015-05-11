@@ -43,7 +43,7 @@ public class BaseServiceImpl<T> implements BaseService<T>{
 	@Override
 	public PageVo getPage(PageVo pageVo){
 		List<T> list = baseMapper.getPage(pageVo);
-		pageVo.setAmount(baseMapper.getAmount());
+		pageVo.setAmount(baseMapper.getAmount(pageVo));
 		pageVo.setList(list);
 		return pageVo;
 	}

@@ -10,6 +10,6 @@ public interface BaseMapper<T> {
 	public void delete(long id);
 	public int update(T model);
 	public List<T> listAll();
-	public long getAmount();
+	public long getAmount(PageVo pageVo);
 	public List<T> getPage(PageVo pageVo);
 }

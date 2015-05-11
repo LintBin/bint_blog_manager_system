@@ -8,12 +8,14 @@ import javax.annotation.Resource;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bint.mapper.ArticleMapper;
+import com.bint.model.ArticleLabelModel;
 import com.bint.model.ArticleModel;
-import com.bint.model.UserModel;
+import com.bint.service.ArticleLabelService;
 import com.bint.service.ArticleService;
 import com.bint.service.base.impl.BaseServiceImpl;
 import com.bint.vo.ArticleVo;
@@ -24,6 +26,8 @@ import com.bint.vo.PageVo;
 public class ArticleServiceImpl extends BaseServiceImpl<ArticleModel> implements
 		ArticleService {
 	private ArticleMapper articleMapper;
+	@Autowired
+	private ArticleLabelService articleLabelServiceImpl;
 
 	@Resource
 	public void setArticleMapper(ArticleMapper articleMapper) {
@@ -36,25 +40,17 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleModel> implements
 		ArticleModel artcileModel = new ArticleModel();
 		BeanUtils.copyProperties(articleVo, artcileModel);
 		artcileModel.setUploadTime(new Date());
-		UserModel user = new UserModel();
-		user.setId(articleVo.getAuthorId());
-		artcileModel.setAuthor(user);
+		artcileModel.setAuthor(articleVo.getAthorName());
 		articleMapper.add(artcileModel);
 	}
 	
 	@Override
-	public void update(ArticleVo articleVo){
-		ArticleModel articleModel = new ArticleModel();
-		BeanUtils.copyProperties(articleVo, articleModel);
+	public void update(ArticleModel articleModel){
 		articleModel.setUploadTime(new Date());
-		articleModel.setId(articleVo.getArticleId());
-		UserModel user = new UserModel();
-		user.setId(articleVo.getAuthorId());
-		articleModel.setAuthor(user);
 		articleMapper.update(articleModel);
 	}
 	
-	@Override
+	/*@Override
 	public PageVo getPage(PageVo pageVo){
 		List<ArticleModel> list = baseMapper.getPage(pageVo);
 		List<ArticleVo> voList = new ArrayList<ArticleVo>();
@@ -62,14 +58,42 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleModel> implements
 			ArticleVo articleVo = new ArticleVo();
 			BeanUtils.copyProperties(articleModel,articleVo);
 			articleVo.setArticleId(articleModel.getId());
+			articleVo.setAthorName(articleModel.getAuthor());
 			LocalDate localDate = new LocalDate(articleModel.getUploadTime());
 			articleVo.setTime(localDate);
+			
+			List<ArticleLabelModel> articleLabelList = articleLabelServiceImpl.getLabelListByArticelId(articleModel.getId());
+			System.err.println(articleLabelList.size());
+			articleVo.setArticleLabelList(articleLabelList);
+			
 			voList.add(articleVo);
 		}
-		pageVo.setAmount(baseMapper.getAmount());
+		pageVo.setPageNum(pageVo.getPageNum());
 		pageVo.setList(voList);
 		return pageVo;
+	}*/
+	
+	public PageVo getPage(PageVo pageVo){
+		List<ArticleVo> articleVoList = articleMapper.getArticlePage(pageVo);
+		System.err.println("articleVoList" + articleVoList.size());
+		List<ArticleVo> articleVoListNew = new ArrayList<ArticleVo>();
+		for(ArticleVo articleVo : articleVoList){
+			LocalDate localDate = new LocalDate(articleVo.getUploadTime());
+			articleVo.setTime(localDate);
+			
+			//取出指定文章所拥有的标签
+			List<ArticleLabelModel> articleLabelList = articleLabelServiceImpl.getLabelListByArticelId(articleVo.getArticleId());
+			articleVo.setArticleLabelList(articleLabelList);
+			
+			articleVoListNew.add(articleVo);
+		}
+		pageVo.setList(articleVoListNew);
+		return pageVo;
 	}
+	
+	
+	
+	
 	/**
 	 * 条件查询
 	 */
@@ -90,5 +114,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleModel> implements
 		pageVo.setAmount(voList.size());
 		return pageVo;
 	}
-	
+
+	@Override
+	public Long getAmount(PageVo pageVo) {
+		return baseMapper.getAmount(pageVo);
+	}
 }

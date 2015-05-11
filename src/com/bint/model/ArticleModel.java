@@ -11,7 +11,7 @@ public class ArticleModel extends BaseModel {
 	private Date uploadTime;
 	private int stateCode;
 	private int praiseAmount;
-	private UserModel author;
+	private String author;
 	private ClassificationModel classification;
 
 	public String getHeadline() {
@@ -70,11 +70,11 @@ public class ArticleModel extends BaseModel {
 		this.classification = classification;
 	}
 
-	public UserModel getAuthor() {
+	public String getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(UserModel author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
@@ -86,5 +86,6 @@ public class ArticleModel extends BaseModel {
 				+ ", author=" + author + ", classification=" + classification
 				+ "]";
 	}
+
 	
 }

@@ -1,6 +1,11 @@
 package com.bint.vo;
 
+import java.util.Date;
+import java.util.List;
+
 import org.joda.time.LocalDate;
+
+import com.bint.model.ArticleLabelModel;
 
 public class ArticleVo {
 	private Long articleId;
@@ -11,14 +16,32 @@ public class ArticleVo {
 	private int stateCode;
 	private int praiseAmount;
 	private String athorName;
-	private Long authorId;
+	private Date uploadTime;
+	private List<ArticleLabelModel> articleLabelList; 
+	private Long labelId;
 
-	public Long getAuthorId() {
-		return authorId;
+	public Date getUploadTime() {
+		return uploadTime;
 	}
 
-	public void setAuthorId(Long authorId) {
-		this.authorId = authorId;
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
+
+	public Long getLabelId() {
+		return labelId;
+	}
+
+	public void setLabelId(Long labelId) {
+		this.labelId = labelId;
+	}
+
+	public List<ArticleLabelModel> getArticleLabelList() {
+		return articleLabelList;
+	}
+
+	public void setArticleLabelList(List<ArticleLabelModel> articleLabelList) {
+		this.articleLabelList = articleLabelList;
 	}
 
 	public String getHeadline() {
@@ -91,10 +114,9 @@ public class ArticleVo {
 		return "ArticleVo [articleId=" + articleId + ", headline=" + headline
 				+ ", content=" + content + ", digest=" + digest + ", time="
 				+ time + ", stateCode=" + stateCode + ", praiseAmount="
-				+ praiseAmount + ", athorName=" + athorName + ", authorId="
-				+ authorId + "]";
+				+ praiseAmount + ", athorName=" + athorName + "]";
 	}
-	
-	
+
+
 
 }

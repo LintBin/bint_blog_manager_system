@@ -7,9 +7,10 @@ import com.bint.model.base.BaseModel;
 public class CommentModel extends BaseModel {
 	private Date commentTime;
 	private String content;
-	private UserModel user;
-	private ArticleModel article;
-	private CommentModel comment;
+	private Long userId;
+	private Long blogId;
+	private Long comemntId;
+	
 	public Date getCommentTime() {
 		return commentTime;
 	}
@@ -22,22 +23,30 @@ public class CommentModel extends BaseModel {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public UserModel getUser() {
-		return user;
+	public Long getBlogId() {
+		return blogId;
 	}
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setBlogId(Long blogId) {
+		this.blogId = blogId;
 	}
-	public ArticleModel getArticle() {
-		return article;
+	public Long getComemntId() {
+		return comemntId;
 	}
-	public void setArticle(ArticleModel article) {
-		this.article = article;
+	public void setComemntId(Long comemntId) {
+		this.comemntId = comemntId;
 	}
-	public CommentModel getComment() {
-		return comment;
+	public Long getUserId() {
+		return userId;
 	}
-	public void setComment(CommentModel comment) {
-		this.comment = comment;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
+	
+	@Override
+	public String toString() {
+		return "CommentModel [commentTime=" + commentTime + ", content="
+				+ content + ", userId=" + userId + ", blogId=" + blogId
+				+ ", comemntId=" + comemntId + "]";
+	}
+	
 }

@@ -7,6 +7,7 @@ public class NotificationModel extends BaseModel{
 	private String toUser;
 	private String content ;
 	private Integer status;
+	
 	public String getToUser() {
 		return toUser;
 	}

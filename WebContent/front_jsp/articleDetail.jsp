@@ -12,6 +12,13 @@
     <script src="js/bootstrap.js"></script>
     <script>
 		$(document).ready(function(){
+			
+			var contentHtml = '<c:out value="${article.content}"/>'
+			//var contentHtml = '<strong>xheditor + 文件上传</strong><br />upLinkUrl:超链接上传接口地址<br />upLinkExt:超链接本地上传扩展限制 【可选】【默认值： zip,rar,txt】<br />upImgUrl:图片上传接口地址<br />upImgExt:图片本地上传扩展限制 【可选】【默认值：jpg,jpeg,gif,png】<br />upFlashUrl:动画上传接口地址<br />upFlashExt:动画本地上传扩展限制 【可选】【默认值： swf】<br />upMediaUrl:视频上传接口地址<br />upMediaExt:视频本地上传扩展限制 【可选】【默认值： avi】';
+			
+			$("#post-content").html(contentHtml);
+			$("#post-content").html($("#post-content").text());
+			
 			$("#commentBt").click(function(){
 				var userId = "${user.id}";
 				if(userId==""){
@@ -138,8 +145,8 @@
                                 <time class="date" datetime="2015-1-15">2015-1-15</time>
                             </div>
                             <div class="post-content">
-                                <p>
-                             		<c:out value="${article.content}"/>
+                                <p id="post-content">
+                             		<%-- <c:out value="${article.content}"/> --%>
                                 </p>
                             </div>
                             <div class="footer clearfix">
